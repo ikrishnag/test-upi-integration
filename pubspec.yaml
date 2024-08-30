@@ -9,7 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  package_info_plus: ^8.0.2
   upi_india: ^3.0.1
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:
