@@ -79,6 +79,8 @@ class HomePageState extends State<HomePage> {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Card(
+                color: Colors.white,
+                surfaceTintColor: Colors.white,
                 elevation: 4,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -140,127 +142,146 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Stylish UPI Payment'),
-        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(50),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+        surfaceTintColor: Colors.white,
+        shadowColor: const Color.fromARGB(255, 88, 88, 88),
+        title: const Text('Test UPI Payment'),
+        centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              // Card for input fields
-              Card(
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      // Receiver UPI ID input
-                      TextField(
-                        controller: _receiverUpiIdController,
-                        decoration: const InputDecoration(
-                          labelText: 'Receiver UPI ID',
-                          border: OutlineInputBorder(),
+      body: Container(
+        color: Colors.grey[200],
+        height: double.infinity,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const SizedBox(height: 24),
+                // Card for input fields
+                Card(
+                  color: Colors.white,
+                  surfaceTintColor: Colors.white,
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        // Receiver UPI ID input
+                        TextField(
+                          controller: _receiverUpiIdController,
+                          decoration: const InputDecoration(
+                            labelText: 'Receiver UPI ID',
+                            border: OutlineInputBorder(),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      // Receiver Name input
-                      TextField(
-                        controller: _receiverNameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Receiver Name',
-                          border: OutlineInputBorder(),
+                        const SizedBox(height: 16),
+                        // Receiver Name input
+                        TextField(
+                          controller: _receiverNameController,
+                          decoration: const InputDecoration(
+                            labelText: 'Receiver Name',
+                            border: OutlineInputBorder(),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      // Amount input
-                      TextField(
-                        controller: _amountController,
-                        decoration: const InputDecoration(
-                          labelText: 'Amount',
-                          border: OutlineInputBorder(),
+
+                        const SizedBox(height: 16),
+                        // Amount input
+                        TextField(
+                          controller: _amountController,
+                          decoration: const InputDecoration(
+                            labelText: 'Amount',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
                         ),
-                        keyboardType: TextInputType.number,
-                      ),
-                      const SizedBox(height: 16),
-                      // Note input
-                      TextField(
-                        controller: _noteController,
-                        decoration: const InputDecoration(
-                          labelText: 'Note',
-                          border: OutlineInputBorder(),
+                        const SizedBox(height: 16),
+                        // Note input
+                        TextField(
+                          controller: _noteController,
+                          decoration: const InputDecoration(
+                            labelText: 'Note',
+                            border: OutlineInputBorder(),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              // UPI App selection section
-              Text(
-                'Select Payment App',
-                style: Theme.of(context).textTheme.titleLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 200,
-                child: displayUpiApps(),
-              ),
-              const SizedBox(height: 24),
-              // Transaction result display
-              if (_transaction != null)
-                FutureBuilder(
-                  future: _transaction,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<UpiResponse> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError) {
+                const SizedBox(height: 24),
+                // UPI App selection section
+                Text(
+                  'Select Payment App',
+                  style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 200,
+                  child: displayUpiApps(),
+                ),
+                const SizedBox(height: 24),
+                // Transaction result display
+                if (_transaction != null)
+                  FutureBuilder(
+                    future: _transaction,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<UpiResponse> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return Card(
+                            color: Colors.white,
+                            surfaceTintColor: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                _upiErrorHandler(snapshot.error.runtimeType),
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          );
+                        }
+                        UpiResponse upiResponse = snapshot.data!;
+                        String txnId = upiResponse.transactionId ?? 'N/A';
+                        String resCode = upiResponse.responseCode ?? 'N/A';
+                        String txnRef = upiResponse.transactionRefId ?? 'N/A';
+                        String status = upiResponse.status ?? 'N/A';
+                        String approvalRef = upiResponse.approvalRefNo ?? 'N/A';
+                        _checkTxnStatus(status);
+
                         return Card(
+                          elevation: 4,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
-                            child: Text(
-                              _upiErrorHandler(snapshot.error.runtimeType),
-                              style: const TextStyle(color: Colors.red),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Transaction Details',
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge),
+                                const SizedBox(height: 16),
+                                Text('Transaction ID: $txnId'),
+                                Text('Response Code: $resCode'),
+                                Text('Reference ID: $txnRef'),
+                                Text('Status: ${status.toUpperCase()}'),
+                                Text('Approval Ref: $approvalRef'),
+                              ],
                             ),
                           ),
                         );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
                       }
-                      UpiResponse upiResponse = snapshot.data!;
-                      String txnId = upiResponse.transactionId ?? 'N/A';
-                      String resCode = upiResponse.responseCode ?? 'N/A';
-                      String txnRef = upiResponse.transactionRefId ?? 'N/A';
-                      String status = upiResponse.status ?? 'N/A';
-                      String approvalRef = upiResponse.approvalRefNo ?? 'N/A';
-                      _checkTxnStatus(status);
-
-                      return Card(
-                        elevation: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Transaction Details',
-                                  style:
-                                      Theme.of(context).textTheme.titleLarge),
-                              const SizedBox(height: 16),
-                              Text('Transaction ID: $txnId'),
-                              Text('Response Code: $resCode'),
-                              Text('Reference ID: $txnRef'),
-                              Text('Status: ${status.toUpperCase()}'),
-                              Text('Approval Ref: $approvalRef'),
-                            ],
-                          ),
-                        ),
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-            ],
+                    },
+                  ),
+              ],
+            ),
           ),
         ),
       ),
