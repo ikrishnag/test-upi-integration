@@ -174,40 +174,60 @@ class HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         // Receiver UPI ID input
-                        TextField(
-                          controller: _receiverUpiIdController,
-                          decoration: const InputDecoration(
-                            labelText: 'Receiver UPI ID',
-                            border: OutlineInputBorder(),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: TextField(
+                            controller: _receiverUpiIdController,
+                            decoration: const InputDecoration(
+                              labelText: ' Receiver UPI ID',
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30))),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
                         // Receiver Name input
-                        TextField(
-                          controller: _receiverNameController,
-                          decoration: const InputDecoration(
-                            labelText: 'Receiver Name',
-                            border: OutlineInputBorder(),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: TextField(
+                            controller: _receiverNameController,
+                            decoration: const InputDecoration(
+                              labelText: ' Receiver Name',
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30))),
+                            ),
                           ),
                         ),
 
                         const SizedBox(height: 16),
                         // Amount input
-                        TextField(
-                          controller: _amountController,
-                          decoration: const InputDecoration(
-                            labelText: 'Amount',
-                            border: OutlineInputBorder(),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: TextField(
+                            controller: _amountController,
+                            decoration: const InputDecoration(
+                              labelText: ' Amount',
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30))),
+                            ),
+                            keyboardType: TextInputType.number,
                           ),
-                          keyboardType: TextInputType.number,
                         ),
                         const SizedBox(height: 16),
                         // Note input
-                        TextField(
-                          controller: _noteController,
-                          decoration: const InputDecoration(
-                            labelText: 'Note',
-                            border: OutlineInputBorder(),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: TextField(
+                            controller: _noteController,
+                            decoration: const InputDecoration(
+                              labelText: ' Note',
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30))),
+                            ),
                           ),
                         ),
                       ],
